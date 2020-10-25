@@ -17,6 +17,11 @@ export default () => {
   const searchApi = async (term) => {
     setError(``);
     try {
+      const { status } = await Location.requestPermissionsAsync();
+      if (status !== `granted`) {
+        setError(`Permission to access location was denied`);
+        return;
+      }
       const {
         coords: { latitude, longitude },
       } = await Location.getCurrentPositionAsync({});

@@ -18,6 +18,7 @@ const SubTitle = styled.Text`
 const Image = styled.Image`
   width: 300px;
   height: 150px;
+  border-radius: 4px;
 `;
 
 const ResultsDetail = ({ result }) => (

@@ -25,7 +25,8 @@ const SearchScreen = () => {
       return price === result.price;
     });
   };
-
+  // TODO - Fix location problem on android
+  // TODO - Fix ScrollView problem on android
   return (
     <Container>
       <SearchBar term={term} onTermChange={setTerm} onTermSubmit={() => searchApi(term)} />
