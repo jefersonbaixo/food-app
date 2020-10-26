@@ -11,6 +11,19 @@ const Title = styled.Text`
   margin: 10px 10px;
 `;
 
+const Details = styled.Text`
+  font-size: 16px;
+  margin: 10px 15px;
+`;
+
+const Open = styled.Text`
+  color: green;
+`;
+
+const Closed = styled.Text`
+  color: red;
+`;
+
 const ResultsShowScreen = ({ navigation }) => {
   const [result, setResult] = useState(null);
   const id = navigation.getParam(`id`);
@@ -23,10 +36,6 @@ const ResultsShowScreen = ({ navigation }) => {
     getResult();
   }, []);
 
-  useEffect(() => {
-    // console.log(result);
-  }, [result]);
-
   if (!result) {
     return null;
   }
@@ -34,7 +43,14 @@ const ResultsShowScreen = ({ navigation }) => {
   return (
     <Container>
       <Title>{result.name}</Title>
-      <ResultImages />
+      <ResultImages images={result.photos} />
+      <Title>Location:</Title>
+      <Details>
+        {result.location.address1}, {result.location.city}
+      </Details>
+      <Details>
+        {result.hours[0].is_open_now ? <Open>Open now</Open> : <Closed>Closed now</Closed>}
+      </Details>
     </Container>
   );
 };

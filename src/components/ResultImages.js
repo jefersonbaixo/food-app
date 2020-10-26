@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
@@ -28,27 +28,44 @@ const Image = styled.Image`
   flex: 1;
   width: 100%;
   height: 100%;
-  /* flex: 1; */
 `;
 
-const ResultImages = () => {
+const ResultImages = ({ images }) => {
+  const [isLoading, setLoading] = useState(false);
+  const [imagesList, setImagesList] = useState(images);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const { height, width } = Dimensions.get(`window`);
+
+  const changeIndex = (value) => {
+    if (selectedIndex + value < 0) {
+      setSelectedIndex(imagesList.length - 1);
+      return;
+    }
+    setSelectedIndex((selectedIndex + value) % imagesList.length);
+  };
+
+  useEffect(() => {
+    setImagesList(images);
+  }, []);
+
   return (
     <Container>
       <ImageBox height={height} width={width}>
-        <Loading />
-        {/* <Image
-          source={{
-            uri: `https://reactnative.dev/img/tiny_logo.png`,
-          }}
-        /> */}
+        {isLoading && <Loading />}
+        <Image
+          source={{ uri: imagesList[selectedIndex] }}
+          onLoadStart={() => setLoading(true)}
+          onLoadEnd={() => setLoading(false)}
+        />
       </ImageBox>
       <ChangeImage>
-        <Button>
+        <Button onPress={() => changeIndex(-1)}>
           <AntDesign name="caretleft" size={34} color="black" />
         </Button>
-        <Text>1 / 3</Text>
-        <Button>
+        <Text>
+          {selectedIndex + 1} / {imagesList.length}
+        </Text>
+        <Button onPress={() => changeIndex(1)}>
           <AntDesign name="caretright" size={34} color="black" />
         </Button>
       </ChangeImage>
